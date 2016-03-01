@@ -3,8 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <title>Gulp + Webpack</title>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Cabin+Condensed' rel='stylesheet' type='text/css'>
+    <link href="//cdn.muicss.com/mui-0.4.6/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.muicss.com/mui-0.4.6/js/mui.min.js"></script>
+    <link rel="stylesheet" href="static/css/app.css">
+    <style> [v-cloak] { display: none; } </style>
 </head>
 <body>
+    <div id="app">
+        <h1>RELOCATE</h1>
+        <form id="form" v-on:submit.prevent="addItem">
+            <div class="mui-textfield">
+                <input type="text" class="" placeholder="nuovo oggetto" v-model="newItem.label">
+            </div>
+            <div class="mui-select">
+                <select name="room" v-model="newItem.room">
+                    <option value="">seleziona</option>
+                    <option value="ingresso">ingresso</option>
+                    <option value="soggiorno">soggiorno</option>
+                    <option value="cucina">cucina</option>
+                    <option value="bagno1">bagno grande</option>
+                    <option value="bagno2">bagno piccolo</option>
+                    <option value="notte">notte</option>
+                    <option value="leo">leo</option>
+                    <option value="emma">emma</option>
+                    <option value="ripostiglio">ripostiglio/cantina</option>
+                </select>
+            </div>
+            <div class="mui-radio">
+                <label><input type="radio" name="destination" v-model="newItem.destination" value="discarica">Discarica</label>
+                <label><input type="radio" name="destination" v-model="newItem.destination" value="vendita">Vendita</label>
+                <label><input type="radio" name="destination" v-model="newItem.destination" value="deposito"> Deposito</label>
+                <label><input type="radio" name="destination" v-model="newItem.destination" value="affitto"> Affitto</label>
+            </div>
+            <div>
+                <button type="submit" class="mui-btn mui-btn--fab mui-btn--accent">+</button>
+            </div>
+        </form>
+        <table>
+            <template v-for="item in items" transition>
+            <tr>
+                <td class="td-label"><strong>{{item.label}}</strong></td>
+                <td class="td-room">{{item.room}}</td>
+                <td class="td-destination">{{item.destination}}</td>
+                <td class="td-edit"><button v-on:click="editItem(item)">V</button></td>
+                <td class="td-delete"><button v-on:click="removeItem(item)">X</button></td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <form id="formz" v-on:submit.prevent="editItem" style="background:#efefef; padding:10px;">
+                        <input type="hidden" name="id" value="{{item.id}}" v-model="item.id">
+                        <div class="mui-textfield">
+                            <input type="text" class="" placeholder="nuovo oggetto" value="{{item.label}}" v-model="item.label">
+                        </div>
+                        <div class="mui-select">
+                            <select name="room" v-model="item.room">
+                                <option value="">seleziona</option>
+                                <option :selected="item.room == ''" value="">seleziona</option>
+                                <option :selected="item.room == 'ingresso'" value="ingresso">ingresso</option>
+                                <option :selected="item.room == 'soggiorno'" value="soggiorno">soggiorno</option>
+                                <option :selected="item.room == 'cucina'" value="cucina">cucina</option>
+                                <option :selected="item.room == 'bagno1'" value="bagno1">bagno grande</option>
+                                <option :selected="item.room == 'bagno2'" value="bagno2">bagno piccolo</option>
+                                <option :selected="item.room == 'notte'" value="notte">notte</option>
+                                <option :selected="item.room == 'leo'" value="leo">leo</option>
+                                <option :selected="item.room == 'emma'" value="emma">emma</option>
+                                <option :selected="item.room == 'ripostiglio'" value="ripostiglio">ripostiglio/cantina</option>
+                            </select>
+                        </div>
+                        <div class="mui-radio">
+                            <label><input type="radio" v-model="item.destination" name="destination" value="discarica" :checked="item.destination == 'discarica'">Discarica</label>
+                            <label><input type="radio" v-model="item.destination" name="destination" value="vendita" :checked="item.destination == 'vendita'">Vendita</label>
+                            <label><input type="radio" v-model="item.destination" name="destination" value="deposito" :checked="item.destination == 'deposito'"> Deposito</label>
+                            <label><input type="radio" v-model="item.destination" name="destination" value="affitto" :checked="item.destination == 'affitto'"> Affitto</label>
+                        </div>
+                        <div>
+                            <button type="submit" class="mui-btn mui-btn--fab mui-btn--accent">+</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </template>
+        </table>
+
+    </div>
+
+    <!-- <section class="todoapp">
+			<header class="header">
+				<h1>todos</h1>
+				<input class="new-todo"
+					autofocus autocomplete="off"
+					placeholder="What needs to be done?"
+					v-model="newTodo"
+					@keyup.enter="addTodo">
+			</header>
+			<section class="main" v-show="todos.length" v-cloak>
+				<input class="toggle-all" type="checkbox" v-model="allDone">
+				<ul class="todo-list">
+					<li class="todo"
+						v-for="todo in filteredTodos"
+						:class="{completed: todo.completed, editing: todo == editedTodo}">
+						<div class="view">
+							<input class="toggle" type="checkbox" v-model="todo.completed">
+							<label @dblclick="editTodo(todo)">{{todo.title}}</label>
+							<button class="destroy" @click="removeTodo(todo)"></button>
+						</div>
+						<input class="edit" type="text"
+							v-model="todo.title"
+							v-todo-focus="todo == editedTodo"
+							@blur="doneEdit(todo)"
+							@keyup.enter="doneEdit(todo)"
+							@keyup.esc="cancelEdit(todo)">
+					</li>
+				</ul>
+			</section>
+			<footer class="footer" v-show="todos.length" v-cloak>
+				<span class="todo-count">
+					<strong v-text="remaining"></strong> {{remaining | pluralize 'item'}} left
+				</span>
+				<ul class="filters">
+					<li><a href="#/all" :class="{selected: visibility == 'all'}">All</a></li>
+					<li><a href="#/active" :class="{selected: visibility == 'active'}">Active</a></li>
+					<li><a href="#/completed" :class="{selected: visibility == 'completed'}">Completed</a></li>
+				</ul>
+				<button class="clear-completed" @click="removeCompleted" v-show="todos.length > remaining">
+					Clear completed
+				</button>
+			</footer>
+		</section> -->
+
     <script src="bundle.js"></script>
+
 </body>
 </html>

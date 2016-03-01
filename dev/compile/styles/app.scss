@@ -1,0 +1,24 @@
+$bg : #f2f2f2;
+$w: #fff;
+*{
+    box-sizing: border-box;
+    position: relative;
+}
+body{
+    background: $bg;
+    margin: 0;
+    text-align: center;
+    font-family: 'Cabin Condensed', sans-serif;
+}
+#app{
+    text-align: left;
+    background: $w;;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-transform: uppercase;
+}
+h1{margin: 0;}
+table{width: 100%;}
+.td-delete{width: 1%;}
