@@ -15,10 +15,57 @@ body{
     background: $w;;
     max-width: 650px;
     margin: 0 auto;
-    padding: 15px;
     border: 1px solid #ddd;
-    text-transform: uppercase;
 }
-h1{margin: 0;}
-table{width: 100%;}
-.td-delete{width: 1%;}
+h1{margin: 0 0 15px; background: #FF4081; color: $w; font-size: 20px; padding: 0px 25px;}
+form{padding: 0 8px;}
+.mui-textfield,
+.mui-select{padding-top: 0; margin-bottom: 10px;}
+.mui-radio{
+    margin-top: 0;
+    margin-bottom: 20px;
+    & > label {
+        display: inline-block;
+        padding: 0 4px;
+        font-size: 10px;
+        &.toggled{background:#FF4081;}
+    }
+    input{display: none;}
+}
+
+.add-btn{position: absolute; bottom:-30px; right:-5px;}
+table{
+    width: 100%;
+    td{white-space: nowrap; padding: 0 4px;}
+}
+.td-room{width: 1%;}
+.td-destination{width: 1%;}
+.td-toggle-done{width: 1%;}
+.btn-toggle-done{padding: 0;}
+.done td{color:#ccc;}
+.done td:after{
+    content:'';
+    position: absolute;
+    top:50%;
+    left:0; right:0;
+    border-bottom: 1px solid #ddd;
+    height: 1;
+}
+.done td.td-toggle-done:after{
+    display: none;
+}
+.done .btn-toggle-done{
+    color: green;
+}
+.edit-panel{
+    background: #efefef;
+    position: fixed;
+    bottom:0;
+    transform: translateY(100%);
+    margin: 0;
+    width: 100%;
+}
+.edit-panel.panel-visible{
+    transform: translateY(0);
+}
+.panel-tall{padding-bottom: 180px;}

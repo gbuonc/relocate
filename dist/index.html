@@ -16,127 +16,74 @@
 <body>
     <div id="app">
         <h1>RELOCATE</h1>
+        <!-- NEW ITEMS ===================================== -->
         <form id="form" v-on:submit.prevent="addItem">
-            <div class="mui-textfield">
-                <input type="text" class="" placeholder="nuovo oggetto" v-model="newItem.label">
-            </div>
-            <div class="mui-select">
-                <select name="room" v-model="newItem.room">
-                    <option value="">seleziona</option>
-                    <option value="ingresso">ingresso</option>
-                    <option value="soggiorno">soggiorno</option>
-                    <option value="cucina">cucina</option>
-                    <option value="bagno1">bagno grande</option>
-                    <option value="bagno2">bagno piccolo</option>
-                    <option value="notte">notte</option>
-                    <option value="leo">leo</option>
-                    <option value="emma">emma</option>
-                    <option value="ripostiglio">ripostiglio/cantina</option>
-                </select>
-            </div>
-            <div class="mui-radio">
-                <label><input type="radio" name="destination" v-model="newItem.destination" value="discarica">Discarica</label>
-                <label><input type="radio" name="destination" v-model="newItem.destination" value="vendita">Vendita</label>
-                <label><input type="radio" name="destination" v-model="newItem.destination" value="deposito"> Deposito</label>
-                <label><input type="radio" name="destination" v-model="newItem.destination" value="affitto"> Affitto</label>
-            </div>
-            <div>
-                <button type="submit" class="mui-btn mui-btn--fab mui-btn--accent">+</button>
+            <div class="mui-panel">
+                <div class="mui-row">
+                  <div class="mui-col-xs-6">
+                      <div class="mui-textfield">
+                          <input type="text" class="" placeholder="nuovo oggetto" v-model="newItem.label">
+                      </div>
+                  </div>
+                  <div class="mui-col-xs-6">
+                      <div class="mui-select">
+                          <select name="room" v-model="newItem.room">
+                              <option value="">seleziona</option>
+                              <option v-for="room in rooms" value="{{room}}">{{room}}</option>
+                          </select>
+                      </div>
+                  </div>
+                </div>
+                <div class="mui-radio">
+                    <template v-for="destination in destinations">
+                        <label class="mui-btn mui-btn--small mui-btn--primary" v-bind:class="{ 'toggled': newItem.destination == destination}"><input type="radio" v-model="newItem.destination" name="destination" value="{{destination}}">{{destination}}</label>
+                    </template>
+                </div>
+                <button type="submit" class="mui-btn mui-btn--fab mui-btn--accent add-btn">+</button>
             </div>
         </form>
-        <table>
-            <template v-for="item in items" transition>
-            <tr>
-                <td class="td-label"><strong>{{item.label}}</strong></td>
-                <td class="td-room">{{item.room}}</td>
-                <td class="td-destination">{{item.destination}}</td>
-                <td class="td-edit"><button v-on:click="editItem(item)">V</button></td>
-                <td class="td-delete"><button v-on:click="removeItem(item)">X</button></td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <form id="formz" v-on:submit.prevent="editItem" style="background:#efefef; padding:10px;">
-                        <input type="hidden" name="id" value="{{item.id}}" v-model="item.id">
-                        <div class="mui-textfield">
-                            <input type="text" class="" placeholder="nuovo oggetto" value="{{item.label}}" v-model="item.label">
-                        </div>
-                        <div class="mui-select">
-                            <select name="room" v-model="item.room">
-                                <option value="">seleziona</option>
-                                <option :selected="item.room == ''" value="">seleziona</option>
-                                <option :selected="item.room == 'ingresso'" value="ingresso">ingresso</option>
-                                <option :selected="item.room == 'soggiorno'" value="soggiorno">soggiorno</option>
-                                <option :selected="item.room == 'cucina'" value="cucina">cucina</option>
-                                <option :selected="item.room == 'bagno1'" value="bagno1">bagno grande</option>
-                                <option :selected="item.room == 'bagno2'" value="bagno2">bagno piccolo</option>
-                                <option :selected="item.room == 'notte'" value="notte">notte</option>
-                                <option :selected="item.room == 'leo'" value="leo">leo</option>
-                                <option :selected="item.room == 'emma'" value="emma">emma</option>
-                                <option :selected="item.room == 'ripostiglio'" value="ripostiglio">ripostiglio/cantina</option>
-                            </select>
-                        </div>
-                        <div class="mui-radio">
-                            <label><input type="radio" v-model="item.destination" name="destination" value="discarica" :checked="item.destination == 'discarica'">Discarica</label>
-                            <label><input type="radio" v-model="item.destination" name="destination" value="vendita" :checked="item.destination == 'vendita'">Vendita</label>
-                            <label><input type="radio" v-model="item.destination" name="destination" value="deposito" :checked="item.destination == 'deposito'"> Deposito</label>
-                            <label><input type="radio" v-model="item.destination" name="destination" value="affitto" :checked="item.destination == 'affitto'"> Affitto</label>
-                        </div>
-                        <div>
-                            <button type="submit" class="mui-btn mui-btn--fab mui-btn--accent">+</button>
-                        </div>
-                    </form>
-                </td>
-            </tr>
-        </template>
-        </table>
 
+        <!-- ITEMS LIST ===================================== -->
+        <div class="mui-panel" v-bind:class="{'panel-tall': editToggle}">
+            <table>
+                <template v-for="item in items" transition>
+                    <tr v-bind:class="{ 'done': item.isDone}">
+                        <td v-on:click.prevent="editItem($index)" class="td-label"><strong>{{item.label}}</strong></td>
+                        <td class="td-room">{{item.room}}</td>
+                        <td class="td-destination">{{item.destination}}</td>
+                        <td class="td-toggle-done"><button v-on:click.prevent="markItemDone($index)" class="mui-btn mui-btn--flat mui-btn--primary btn-toggle-done">✔</button></td>
+                    </tr>
+                </template>
+            </table>
+        </div>
+        <!-- ITEMS EDIT ===================================== -->
+        <div class="mui-panel edit-panel" v-bind:class="{'panel-visible': editToggle}" transition>
+            <form>
+                <div class="mui-row">
+                  <div class="mui-col-xs-6">
+                      <div class="mui-textfield">
+                          <input type="text" class="" placeholder="nuovo oggetto" v-model="tempItem.label">
+                      </div>
+                  </div>
+                  <div class="mui-col-xs-6">
+                      <div class="mui-select">
+                          <select name="room" v-model="tempItem.room">
+                              <option value="">seleziona</option>
+                              <option v-for="room in rooms" value="{{room}}">{{room}}</option>
+                          </select>
+                      </div>
+                  </div>
+                </div>
+                <div class="mui-radio">
+                    <template v-for="destination in destinations">
+                        <label class="mui-btn mui-btn--small mui-btn--primary" v-bind:class="{ 'toggled': tempItem.destination == destination}"><input type="radio" v-model="tempItem.destination" name="destination" value="{{destination}}" >{{destination}}</label>
+                    </template>
+                </div>
+                <button v-on:click.prevent="saveItem(tempItem)" type="submit" class="mui-btn mui-btn--accent">✐</button>
+                <button v-on:click.prevent="removeItem()" class="mui-btn">✖</button>
+            </form>
+        </div>
     </div>
-
-    <!-- <section class="todoapp">
-			<header class="header">
-				<h1>todos</h1>
-				<input class="new-todo"
-					autofocus autocomplete="off"
-					placeholder="What needs to be done?"
-					v-model="newTodo"
-					@keyup.enter="addTodo">
-			</header>
-			<section class="main" v-show="todos.length" v-cloak>
-				<input class="toggle-all" type="checkbox" v-model="allDone">
-				<ul class="todo-list">
-					<li class="todo"
-						v-for="todo in filteredTodos"
-						:class="{completed: todo.completed, editing: todo == editedTodo}">
-						<div class="view">
-							<input class="toggle" type="checkbox" v-model="todo.completed">
-							<label @dblclick="editTodo(todo)">{{todo.title}}</label>
-							<button class="destroy" @click="removeTodo(todo)"></button>
-						</div>
-						<input class="edit" type="text"
-							v-model="todo.title"
-							v-todo-focus="todo == editedTodo"
-							@blur="doneEdit(todo)"
-							@keyup.enter="doneEdit(todo)"
-							@keyup.esc="cancelEdit(todo)">
-					</li>
-				</ul>
-			</section>
-			<footer class="footer" v-show="todos.length" v-cloak>
-				<span class="todo-count">
-					<strong v-text="remaining"></strong> {{remaining | pluralize 'item'}} left
-				</span>
-				<ul class="filters">
-					<li><a href="#/all" :class="{selected: visibility == 'all'}">All</a></li>
-					<li><a href="#/active" :class="{selected: visibility == 'active'}">Active</a></li>
-					<li><a href="#/completed" :class="{selected: visibility == 'completed'}">Completed</a></li>
-				</ul>
-				<button class="clear-completed" @click="removeCompleted" v-show="todos.length > remaining">
-					Clear completed
-				</button>
-			</footer>
-		</section> -->
-
     <script src="bundle.js"></script>
-
 </body>
 </html>
