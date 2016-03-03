@@ -37,7 +37,11 @@ var app = new Vue({
     items: [],
     rooms:['ingresso', 'soggiorno', 'cucina', 'bagno grande', 'bagno piccolo', 'emma', 'leo', 'notte', 'ripostiglio', 'cantina', 'box'],
     destinations:['deposito','casa in affitto','vendita', 'smaltimento'],
-    newItem: {isDone: false},
+    newItem: {
+        id: null,
+        label:'',
+        isDone: false
+    },
     tempItem: {},
     editToggle: false
   },
@@ -71,18 +75,20 @@ var app = new Vue({
     },
     saveItem: function(){
         Items.child(app.tempItem.id).update(app.tempItem);
-        app.editToggle = false;
-        app.tempItem = {};
+        app.closePanel();
     },
     removeItem: function () {
-        app.editToggle = false;
         new Firebase(baseURL + 'items/' + app.tempItem.id).remove();
-        app.tempItem = {};
+        app.closePanel();
     },
     markItemDone: function (i) {
+        console.log(i);
         app.tempItem = app.items[i];
         app.tempItem.isDone = !app.tempItem.isDone;
         Items.child(app.tempItem.id).update(app.tempItem);
+        app.closePanel();
+    },
+    closePanel: function () {
         app.editToggle = false;
         app.tempItem = {};
     }

@@ -11,7 +11,10 @@
     <link href="//cdn.muicss.com/mui-0.4.6/css/mui.min.css" rel="stylesheet" type="text/css" />
     <script src="//cdn.muicss.com/mui-0.4.6/js/mui.min.js"></script>
     <link rel="stylesheet" href="static/css/app.css">
-    <style> [v-cloak] { display: none; } </style>
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="./app-icon.png">
+    <!-- android web app manifest -->
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div id="app">
@@ -36,7 +39,7 @@
                 </div>
                 <div class="mui-radio">
                     <template v-for="destination in destinations">
-                        <label class="mui-btn mui-btn--small mui-btn--primary" v-bind:class="{ 'toggled': newItem.destination == destination}"><input type="radio" v-model="newItem.destination" name="destination" value="{{destination}}">{{destination}}</label>
+                        <label class="mui-btn mui-btn--flat mui-btn--primary" v-bind:class="{ 'toggled': newItem.destination == destination}"><input type="radio" v-model="newItem.destination" name="destination" value="{{destination}}">{{destination}}</label>
                     </template>
                 </div>
                 <button type="submit" class="mui-btn mui-btn--fab mui-btn--accent add-btn">+</button>
@@ -76,12 +79,14 @@
                 </div>
                 <div class="mui-radio">
                     <template v-for="destination in destinations">
-                        <label class="mui-btn mui-btn--small mui-btn--primary" v-bind:class="{ 'toggled': tempItem.destination == destination}"><input type="radio" v-model="tempItem.destination" name="destination" value="{{destination}}" >{{destination}}</label>
+                        <label class="mui-btn mui-btn--flat mui-btn--primary" v-bind:class="{ 'toggled': tempItem.destination == destination}"><input type="radio" v-model="tempItem.destination" name="destination" value="{{destination}}" >{{destination}}</label>
                     </template>
                 </div>
-                <button v-on:click.prevent="saveItem(tempItem)" type="submit" class="mui-btn mui-btn--accent">✐</button>
-                <button v-on:click.prevent="removeItem()" class="mui-btn">✖</button>
+                <hr>
+                <button v-on:click.prevent="saveItem(tempItem)" type="submit" class="mui-btn mui-btn--small mui-btn--primary">✐ modifica</button>
+                <button v-on:click.prevent="removeItem()" class="mui-btn mui-btn--small mui-btn--danger">✖ elimina</button>
             </form>
+            <span v-on:click.prevent="closePanel()" class="btn-panel-close">&times;</span>
         </div>
     </div>
     <script src="bundle.js"></script>

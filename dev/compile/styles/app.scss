@@ -9,6 +9,7 @@ body{
     margin: 0;
     text-align: center;
     font-family: 'Cabin Condensed', sans-serif;
+    padding-top: 50px;
 }
 #app{
     text-align: left;
@@ -17,18 +18,19 @@ body{
     margin: 0 auto;
     border: 1px solid #ddd;
 }
-h1{margin: 0 0 15px; background: #FF4081; color: $w; font-size: 20px; padding: 0px 25px;}
+h1{margin: 0 0 15px; background: #FF4081; color: $w; font-size: 20px; padding: 0px 25px; position: fixed; z-index: 2; top:0; width: 100%;}
 form{padding: 0 8px;}
 .mui-textfield,
 .mui-select{padding-top: 0; margin-bottom: 10px;}
 .mui-radio{
     margin-top: 0;
     margin-bottom: 20px;
+    text-align: center;
     & > label {
         display: inline-block;
-        padding: 0 4px;
+        padding: 0 2px;
         font-size: 10px;
-        &.toggled{background:#FF4081;}
+        &.toggled{color:#FF4081 !important;}
     }
     input{display: none;}
 }
@@ -64,8 +66,14 @@ table{
     transform: translateY(100%);
     margin: 0;
     width: 100%;
+    max-width: 650px;
+    padding: 35px 10px 10px;
+    text-align: center;
+    hr{margin: 7px;}
+    .mui-radio{margin-bottom: 7px;}
 }
 .edit-panel.panel-visible{
     transform: translateY(0);
 }
 .panel-tall{padding-bottom: 180px;}
+.btn-panel-close{font-size: 30px; position: absolute; top: -8px; right: 10px;}
